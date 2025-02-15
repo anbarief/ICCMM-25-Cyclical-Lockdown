@@ -19,9 +19,9 @@ BETA_approx = BETA; ALPHA_approx = ALPHA;
 
 %%%%%%%%%%%%%% LOCK DOWN PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% EDIT THESE 4 LINES FOR DIFFERENT SCENARIOS:
-lock_down = 0;       %%% <--- SIMULATE WITH LOCKDOWN OR NOT?  1 MEANS LOCKDOWN, 0 MEANS NO LOCKDOWN
+lock_down = 0;       %%% <--- SIMULATE WITH LOCKDOWN OR NOT?  1 MEANS LOCKDOWN, 0 MEANS NO LOCKDOWN WHICH IS FITTING OF THE ACTUAL DATA
 t_lag = 259;
-W = 5; L = 2;        %%% <--- W DAYS OF FREE, L DAYS OF LOCKDOWN
+W = 4; L = 3;        %%% <--- W DAYS OF FREE, L DAYS OF LOCKDOWN
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -50,37 +50,38 @@ plot(t, Damp); title("Damping function");
 ylim([-0.1, 1.1]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function result = odefun(x, y, Damp)
+%%%%% Runge-Kutta 4 implementation
+function result = f(y, x, Damp)
   global t BETA_approx ALPHA_approx;
- [ d, ix ] = min( abs( t-x ) );
+  [ d, ix ] = min( abs( t-x ) );
   f1 =   -(Damp(ix)*BETA_approx(ix)*y(1)*y(2));
   f2 =    Damp(ix)*(BETA_approx(ix)*y(1)*y(2)) - ALPHA_approx(ix)*y(2);
   result = [f1; f2];
 end
-
-percent_updated = 0; tic;
-[t, sol] = ode45(@(t,y) odefun(t,y, Damp), t, [S(1); I(1)]);
+percent_updated = 0;
+tic;
+for it=[2:1:nt]
+yn = [S(it-1); I(it-1)];
+k1 = dt*f( yn, t(it-1), Damp );
+k2 = dt*f( yn + 0.5*k1, t(it-1) + 0.5*dt, Damp );
+k3 = dt*f( yn + 0.5*k2, t(it-1) + 0.5*dt, Damp );
+k4 = dt*f( yn + k3, t(it-1) + dt, Damp  );
+yn_new = yn + (k1/6) + (k2/3) + (k3/3) + (k4/6);
+S(it) = yn_new(1); I(it) = yn_new(2);
+if I(it) <= 0
+I(it) = 0;
+end
+percent = floor(100*it/nt);
+if ((mod(percent,5)==0) && (percent ~= percent_updated))
+      disp(['Computing... ', num2str(percent), '%']);
+      percent_updated = percent;
+endif
+endfor
 toc;
-
-negative = 0;
-for i=1:1:nt
-if sol(i,2) >= 0
-S(i) = sol(i,1); I(i) = sol(i,2);
-else
-S(i) = S(i-1);  I(i) = 0; last_index = i; negative = 1;
-break
-endif
-endfor
-if negative == 1
-for i=last_index+1:1:nt
-S(i) = S(i-1);  I(i) = 0;
-endfor
-endif
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
 figure;
 plot(t, S, '-r', t, S_data, '--b'); legend("S Model", "S Actual");
 
 figure;
 plot(t, I, '-r', t, I_data, '--b'); legend("I Model", "I Actual");
-
-
