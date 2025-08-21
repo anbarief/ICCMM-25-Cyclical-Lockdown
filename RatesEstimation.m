@@ -151,10 +151,11 @@ n_daily = length(BETA_daily);
 BETA_interp = interp1(t_day, BETA_daily, t_samples);
 ALPHA_interp = interp1(t_day, ALPHA_daily, t_samples);
 
-figure;
-plot(t_samples, BETA_interp); title("Beta*Np");
+figure;plot(t_samples, BETA_interp); title("Beta*Np");
+xlim([t_samples(1) t_samples(end)]);
 figure;
 plot(t_samples, ALPHA_interp); title("Alpha");
+xlim([t_samples(1) t_samples(end)]);
 
 if write_to_csv == 1
 csvwrite("Beta.csv", BETA_interp/N_p);

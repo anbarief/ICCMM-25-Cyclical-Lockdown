@@ -1,4 +1,4 @@
-clear all;
+clear all; close all;
 
 global t BETA_approx ALPHA_approx;
 
@@ -19,7 +19,7 @@ BETA_approx = BETA; ALPHA_approx = ALPHA;
 
 %%%%%%%%%%%%%% LOCK DOWN PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% EDIT THESE 4 LINES FOR DIFFERENT SCENARIOS:
-lock_down = 0;       %%% <--- SIMULATE WITH LOCKDOWN OR NOT?  1 MEANS CYCLICAL LOCKDOWN, 0 MEANS NO LOCKDOWN WHICH IS FITTING OF THE ACTUAL DATA
+lock_down = 1;       %%% <--- SIMULATE WITH LOCKDOWN OR NOT?  1 MEANS CYCLICAL LOCKDOWN, 0 MEANS NO LOCKDOWN WHICH IS FITTING OF THE ACTUAL DATA
 t_lag = 259;
 W = 4; L = 3;        %%% <--- W DAYS OF FREE, L DAYS OF LOCKDOWN
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
