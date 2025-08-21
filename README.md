@@ -4,7 +4,9 @@
 
 GNU Octave is free and can be downloaded in ---> https://octave.org/
 
-User should save all of the files in the same folder. User can simply run the ```NumericalSimulation.m``` since the rates are already available as ```Beta.csv``` and ```Alpha.csv``` after the computation done in ```RatesEstimation.m```. You can try running it again if you want.
+User should save all of the files in the same folder. User can simply run the ```NumericalSimulation.m``` since the rates are already available as ```Beta.csv``` and ```Alpha.csv``` after the computation done in ```RatesEstimation.m```. You can try running ```RatesEstimation.m``` again if you want.
+
+The data was first processed in Python, the code for data processing is ```data_preprocessing_USA.py```.
 
 To change the lockdown parameters, edit lines 22-24 in the ```NumericalSimulation.m```. The code will show three plots: Damping function, S(t) (actual and model), I(t) (actual and model).
 
