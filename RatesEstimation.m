@@ -1,3 +1,5 @@
+%Author: Arief Anbiya
+
 clear all;
 
 write_to_csv = 1;
@@ -161,3 +163,4 @@ if write_to_csv == 1
 csvwrite("Beta.csv", BETA_interp/N_p);
 csvwrite("Alpha.csv", ALPHA_interp);
 endif
+
