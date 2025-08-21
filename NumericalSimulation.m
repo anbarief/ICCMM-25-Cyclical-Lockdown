@@ -1,3 +1,5 @@
+%Author: Arief Anbiya
+
 clear all; close all;
 
 global t BETA_approx ALPHA_approx;
@@ -85,4 +87,5 @@ plot(t, S, '-r', t, S_data, '--b'); legend("S Model", "S Actual");
 
 figure;
 plot(t, I, '-r', t, I_data, '--b'); legend("I Model", "I Actual");
+
 
